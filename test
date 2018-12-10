@@ -1,0 +1,11 @@
+void main()
+{
+int a = 2, b;
+//int* d;
+int ss[50];
+char pp[];
+while (a > 0) {
+a = a - 1;
+}
+print(a);
+}
