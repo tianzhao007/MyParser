@@ -63,74 +63,83 @@ Program
 /*基本表达式*/
 primary_expression 
 	: IDENTIFIER {
-		$$ = create_tree("primary_expression",1,$1);
-		printf("%d:\tID Declaration,\t\tsymbol:%s\tChildren:\n", NUM ++, $1->content.c_str());
+		$$ = create_tree($1->content.c_str(),1,$1);
+		$$->no = NUM ++;
+		printf("%d:\tID Declaration,\t\tsymbol:%s\tChildren:\n", $$->no, $1->content.c_str());
 	}
 	| TRUE {
-		$$ = create_tree("primary_expression",1,$1);
+		$$ = create_tree($1->content.c_str(),1,$1);
 		// $$->type = "bool";
 		// $$->int_value = $1->int_value;
-		printf("%d:\tValue Judgement,\t\tTRUE\tChildren:\n", NUM ++);
+		$$->no = NUM ++;
+		printf("%d:\tValue Judgement,\t\tTRUE\tChildren:\n", $$->no);
 	}
 	| FALSE {
-		$$ = create_tree("primary_expression",1,$1);
+		$$ = create_tree($1->content.c_str(),1,$1);
 		// $$->type = "bool";
 		// $$->int_value = $1->int_value;
-		printf("%d:\tValue Judgement,\t\tFALSE\tChildren:\n", NUM ++);
+		$$->no = NUM ++;
+		printf("%d:\tValue Judgement,\t\tFALSE\tChildren:\n", $$->no);
 	}
 	| CONSTANT_INT {
 		//printf("%d",$1->int_value);
-		$$ = create_tree("primary_expression",1,$1);
+		$$ = create_tree($1->content.c_str(),1,$1);
 		// $$->type = "int";
 		// $$->int_value = $1->int_value;
-		printf("%d:\tConstant INT Declaration,\tvalue:%s\tChildren:\n", NUM ++, $1->content.c_str());
+		$$->no = NUM ++;
+		printf("%d:\tConstant INT Declaration,\tvalue:%s\tChildren:\n", $$->no, $1->content.c_str());
 		
 	}
 	| CONSTANT_DOUBLE {
-		$$ = create_tree("primary_expression",1,$1);
+		$$ = create_tree($1->content.c_str(),1,$1);
 		// $$->type = "double";
 		// $$->double_value = $1->double_value;
-		printf("%d:\tConstant DOUBLE Declaration,\tvalue:%s\tChildren:\n", NUM ++, $1->content.c_str());
+		$$->no = NUM ++;
+		printf("%d:\tConstant DOUBLE Declaration,\tvalue:%s\tChildren:\n", $$->no, $1->content.c_str());
 	}
-	| '(' expression ')'{
+	| '(' expression ')' {
 		$$ = create_tree("primary_expression",3,$1,$2,$3);
 	}
 	;
 
 /*后缀表达式*/
 postfix_expression
-	: primary_expression{
-		$$ = create_tree("postfix_expression",1,$1);
+	: primary_expression {
+		$$ = create_tree($1->content.c_str(),1,$1);
+		$$->no = $1->no;
 	}
-	| postfix_expression '[' expression ']'{
+	| postfix_expression '[' expression ']' {
 		$$ = create_tree("postfix_expression",4,$1,$2,$3,$4);
 		//数组调用
 	}
-	| postfix_expression '(' ')'{
+	| postfix_expression '(' ')' {
 		$$ = create_tree("postfix_expression",3,$1,$2,$3);
 		//函数调用
 	}
-	| postfix_expression '(' argument_expression_list ')'{
+	| postfix_expression '(' argument_expression_list ')' {
 		$$ = create_tree("postfix_expression",4,$1,$2,$3,$4);
 		//函数调用
 	}
-	| postfix_expression INC_OP{
+	| postfix_expression INC_OP {
 		//++
 		$$ = create_tree("postfix_expression",2,$1,$2);
 	}
-	| postfix_expression DEC_OP{
+	| postfix_expression DEC_OP {
 		//--
 		$$ = create_tree("postfix_expression",2,$1,$2);
 	}
 	;
 
 argument_expression_list
-	: assignment_expression{
+	: assignment_expression {
 		$$ = create_tree("argument_expression_list",1,$1);
+		$$->no = $1->no;
 	}
 	| argument_expression_list ',' assignment_expression {
-		$$ = create_tree("argument_expression_list",3,$1,$2,$3);
-		printf("%d:\tVar Declaration,\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tVar Declaration,\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
@@ -139,16 +148,19 @@ unary_expression
 	: postfix_expression{
 		//printf("postfix");
 		$$ = create_tree("unary_expression",1,$1);
+		$$->no = $1->no;
 	}
 	| INC_OP unary_expression{
 		//++
 		$$ = create_tree("unary_expression",2,$1,$2);
-		printf("%d:\tExpr,\t\t\top:++\t\tChildren:\n", NUM ++);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:++\t\tChildren:", $$->no);
 	}
 	| DEC_OP unary_expression{
 		//--
 		$$ = create_tree("unary_expression",2,$1,$2);
-		printf("%d:\tExpr,\t\t\top:--\t\tChildren:\n", NUM ++);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:--\t\tChildren:", $$->no);
 	}
 	| unary_operator unary_expression{
 		$$ = create_tree("unary_expression",2,$1,$2);
@@ -175,18 +187,25 @@ unary_operator
 multiplicative_expression
 	: unary_expression {
 		$$ = create_tree("multiplicative_expression",1,$1);
+		$$->no = $1->no;
 	}
 	| multiplicative_expression '*' unary_expression {
-		$$ = create_tree("multiplicative_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:*\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:*\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| multiplicative_expression '/' unary_expression {
-		$$ = create_tree("multiplicative_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:/\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:/\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| multiplicative_expression '%' unary_expression {
-		$$ = create_tree("multiplicative_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:%\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:%\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
@@ -194,14 +213,19 @@ multiplicative_expression
 additive_expression
 	: multiplicative_expression  {
 		$$ = create_tree("additive_expression",1,$1);
+		$$->no = $1->no;
 	}
 	| additive_expression '+' multiplicative_expression {
-		$$ = create_tree("additive_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:+\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:+\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| additive_expression '-' multiplicative_expression {
-		$$ = create_tree("additive_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:-\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:-\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
@@ -209,16 +233,21 @@ additive_expression
 shift_expression
 	: additive_expression {
 		$$ = create_tree("shift_expression",1,$1);
+		$$->no = $1->no;
 	}
 	| shift_expression LEFT_OP additive_expression {
 		//<<
-		$$ = create_tree("shift_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:<<\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:<<\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| shift_expression RIGHT_OP additive_expression {
 		//>>
-		$$ = create_tree("shift_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:>>\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:>>\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
@@ -226,24 +255,33 @@ shift_expression
 relational_expression
 	: shift_expression {
 		$$ = create_tree("relational_expression",1,$1);
+		$$->no = $1->no;
 	}
 	| relational_expression '<' shift_expression {
-		$$ = create_tree("relational_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:<\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:<\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| relational_expression '>' shift_expression {
-		$$ = create_tree("relational_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:>\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:>\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| relational_expression LE_OP shift_expression {
 		// <= 
-		$$ = create_tree("relational_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:<=\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:<=\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| relational_expression GE_OP shift_expression {
 		// >=
-		$$ = create_tree("relational_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:>=\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:>=\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
@@ -251,26 +289,34 @@ relational_expression
 equality_expression
 	: relational_expression {
 		$$ = create_tree("equality_expression",1,$1);
+		$$->no = $1->no;
 	}
 	| equality_expression EQ_OP relational_expression {
 		// ==
-		$$ = create_tree("equality_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:==\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:==\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| equality_expression NE_OP relational_expression {
 		// !=
-		$$ = create_tree("equality_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:!=\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:!=\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
 and_expression
 	: equality_expression {
 		$$ = create_tree("and_expression",1,$1);
+		$$->no = $1->no;
 	}
 	| and_expression '&' equality_expression {
-		$$ = create_tree("and_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:&\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:&\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
@@ -278,10 +324,13 @@ and_expression
 exclusive_or_expression
 	: and_expression {
 		$$ = create_tree("exclusive_or_expression",1,$1);
+		$$->no = $1->no;
 	}
 	| exclusive_or_expression '^' and_expression {
-		$$ = create_tree("exclusive_or_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:^\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:^\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
@@ -289,10 +338,13 @@ exclusive_or_expression
 inclusive_or_expression
 	: exclusive_or_expression {
 		$$ = create_tree("inclusive_or_expression",1,$1);
+		$$->no = $1->no;
 	}
 	| inclusive_or_expression '|' exclusive_or_expression {
-		$$ = create_tree("inclusive_or_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:|\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:|\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
@@ -300,11 +352,14 @@ inclusive_or_expression
 logical_and_expression
 	: inclusive_or_expression {
 		$$ = create_tree("logical_and_expression",1,$1);
+		$$->no = $1->no;
 	}
 	| logical_and_expression AND_OP inclusive_or_expression {
 		//&&
-		$$ = create_tree("logical_and_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:&&\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:&&\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
@@ -312,11 +367,14 @@ logical_and_expression
 logical_or_expression
 	: logical_and_expression {
 		$$ = create_tree("logical_or_expression",1,$1);
+		$$->no = $1->no;
 	}
 	| logical_or_expression OR_OP logical_and_expression {
 		//||
-		$$ = create_tree("logical_or_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:||\t\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:||\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
@@ -325,10 +383,13 @@ assignment_expression
 	: logical_or_expression {
 		//条件表达式
 		$$ = create_tree("assignment_expression",1,$1);
+		$$->no = $1->no;
 	}
 	| unary_expression assignment_operator assignment_expression {
-		$$ = create_tree("assignment_expression",3,$1,$2,$3);
-		printf("%d:\tExpr,\t\t\top:%s\t\tChildren:\n", NUM ++, $2->content.c_str());
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:%s\t\tChildren: ", $$->no, $2->content.c_str());
+		printNo($$);
 	}
 	;
 
@@ -384,11 +445,14 @@ expression
 	: assignment_expression {
 		//赋值表达式
 		$$ = create_tree("expression",1,$1);
+		$$->no = $1->no;
 	}
 	| expression ',' assignment_expression {
 		//逗号表达式
-		$$ = create_tree("expression",3,$1,$2,$3);
-		printf("%d:\tVar Declaration,\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tVar Declaration,\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
@@ -398,7 +462,7 @@ declaration
 		$$ = create_tree("declaration",2,$1,$2); //?
 	}
 	| type_specifier init_declarator_list ';' {
-		$$ = create_tree("declaration",3,$1,$2,$3);
+		$$ = create_tree("declaration",2,$1,$3);
 	}
 	;
 
@@ -406,18 +470,26 @@ declaration
 init_declarator_list
 	: init_declarator {
 		$$ = create_tree("init_declarator_list",1,$1);
+		$$->no = $1->no;
 	}
 	| init_declarator_list ',' init_declarator {
-		$$ = create_tree("init_declarator_list",3,$1,$2,$3);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tVar Declaration,\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
 init_declarator
 	: declarator {
 		$$ = create_tree("init_declarator",1,$1);
+		$$->no = $1->no;
 	}
 	| declarator '=' initializer {
-		$$ = create_tree("init_declarator",3,$1,$2,$3);
+		$$ = create_tree($2->content.c_str(),2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:=\t\tChildren:\n", $$->no);
+		printNo($$);
 	}
 	;
 
@@ -426,23 +498,28 @@ init_declarator
 type_specifier
 	: VOID {
 		$$ = create_tree("type_specifier",1,$1);
-		printf("%d:\tType Specifier,\t\tvoid\t\tChildren:\n", NUM ++);
+		$$->no = NUM ++;
+		printf("%d:\tType Specifier,\t\tvoid\t\tChildren:\n", $$->no);
 	}
 	| CHAR {
 		$$ = create_tree("type_specifier",1,$1);
-		printf("%d:\tType Specifier,\t\tchar\t\tChildren:\n", NUM ++);
+		$$->no = NUM ++;
+		printf("%d:\tType Specifier,\t\tchar\t\tChildren:\n", $$->no);
 	}
 	| INT {
 		$$ = create_tree("type_specifier",1,$1);
-		printf("%d:\tType Specifier,\t\tint\t\tChildren:\n", NUM ++);
+		$$->no = NUM ++;
+		printf("%d:\tType Specifier,\t\tint\t\tChildren:\n", $$->no);
 	}
 	| DOUBLE {
 		$$ = create_tree("type_specifier",1,$1);
-		printf("%d:\tType Specifier,\t\tdouble\t\tChildren:\n", NUM ++);	
+		$$->no = NUM ++;
+		printf("%d:\tType Specifier,\t\tdouble\t\tChildren:\n", $$->no);	
 	}
 	| BOOL {
 		$$ = create_tree("type_specifier",1,$1);
-		printf("%d:\tType Specifier,\t\tbool\t\tChildren:\n", NUM ++);
+		$$->no = NUM ++;
+		printf("%d:\tType Specifier,\t\tbool\t\tChildren:\n", $$->no);
 	}
 	;
 
@@ -452,7 +529,8 @@ declarator
 	: IDENTIFIER {
 		//变量
 		$$ = create_tree("declarator",1,$1);
-		printf("%d:\tID Declaration,\t\tsymbol:%s\tChildren:\n", NUM ++, $1->content.c_str());
+		$$->no = NUM ++;
+		printf("%d:\tID Declaration,\t\tsymbol:%s\tChildren:\n", $$->no, $1->content.c_str());
 	}
 	| '(' declarator ')' {
 		//.....
@@ -462,7 +540,8 @@ declarator
 		//数组
 		//printf("assignment_expression");
 		$$ = create_tree("declarator",4,$1,$2,$3,$4);
-		printf("%d:\tArray Declaration,\tsymbol:%s, interval: %s\tChildren:\n", NUM ++, $1->content.c_str(), $3->content.c_str());
+		$$->no = NUM ++;
+		printf("%d:\tArray Declaration,\tsymbol:%s, interval: %s\tChildren:\n", $$->no, $1->content.c_str(), $3->content.c_str());
 	}
 	| declarator '[' '*' ']' {
 		//....
@@ -471,22 +550,26 @@ declarator
 	| declarator '[' ']' {
 		//数组
 		$$ = create_tree("declarator",3,$1,$2,$3);
-		printf("%d:\tArray Declaration,\tsymbol:%s\tChildren:\n", NUM ++, $1->content.c_str());
+		$$->no = NUM ++;
+		printf("%d:\tArray Declaration,\tsymbol:%s\tChildren:\n", $$->no, $1->content.c_str());
 	}
 	| declarator '(' parameter_list ')' {
 		//函数
 		$$ = create_tree("declarator",4,$1,$2,$3,$4);
-		printf("%d:\tFunction Declaration,\tsymbol:%s, interval: %s\tChildren:\n", NUM ++, $1->content.c_str(), $3->content.c_str());
+		$$->no = NUM ++;
+		printf("%d:\tFunction Declaration,\tsymbol:%s, interval: %s\tChildren:\n", $$->no, $1->content.c_str(), $3->content.c_str());
 	}
 	| declarator '(' identifier_list ')' {
 		//函数
 		$$ = create_tree("declarator",4,$1,$2,$3,$4);
-		printf("%d:\tFunction Declaration,\tsymbol:%s, interval: %s\tChildren:\n", NUM ++, $1->content.c_str(), $3->content.c_str());
+		$$->no = NUM ++;
+		printf("%d:\tFunction Declaration,\tsymbol:%s, interval: %s\tChildren:\n", $$->no, $1->content.c_str(), $3->content.c_str());
 	}
 	| declarator '(' ')' {
 		//函数
 		$$ = create_tree("declarator",3,$1,$2,$3);
-		printf("%d:\tFunction Declaration,\tsymbol:%s\tChildren:\n", NUM ++, $1->content.c_str());
+		$$->no = NUM ++;
+		printf("%d:\tFunction Declaration,\tsymbol:%s\tChildren:\n", $$->no, $1->content.c_str());
 	}
 	;
 
@@ -495,9 +578,13 @@ declarator
 parameter_list
 	: parameter_declaration {
 		$$ = create_tree("parameter_list",1,$1);
+		$$->no = $1->no;
 	}
 	| parameter_list ',' parameter_declaration {
 		$$ = create_tree("parameter_list",3,$1,$2,$3);
+		$$->no = NUM ++;
+		printf("%d:\tVar Declaration,\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
@@ -519,6 +606,9 @@ identifier_list
 	}
 	| identifier_list ',' IDENTIFIER {
 		$$ = create_tree("identifier_list",3,$1,$2,$3);
+		$$->no = NUM ++;
+		printf("%d:\tVar Declaration,\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
@@ -562,6 +652,7 @@ abstract_declarator
 initializer
 	: assignment_expression {
 		$$ = create_tree("initializer",1,$1);
+		$$->no = $1->no;
 	}
 	| '{' initializer_list '}' {
 		//列表初始化 {1,1,1}
@@ -576,27 +667,37 @@ initializer
 initializer_list
 	: initializer {
 		$$ = create_tree("initializer_list",1,$1);
+		$$->no = $1->no;
 	}
 	| designation initializer {
 		$$ = create_tree("initializer_list",2,$1,$2);
 	}
 	| initializer_list ',' initializer {
 		$$ = create_tree("initializer_list",3,$1,$2,$3);
+		$$->no = NUM ++;
+		printf("%d:\tVar Declaration,\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| initializer_list ',' designation initializer {
 		$$ = create_tree("initializer_list",3,$1,$2,$3);
+		$$->no = NUM ++;
+		printf("%d:\tVar Declaration,\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
 designation
 	: designator_list '=' {
 		$$ = create_tree("designation",2,$1,$2);
+		$$->no = NUM ++;
+		printf("%d:\tExpr,\t\t\top:=\t\tChildren:\n", $$->no);
 	}
 	;
 
 designator_list
 	: designator {
 		$$ = create_tree("designator_list",1,$1);
+		$$->no = $1->no;
 	}
 	| designator_list designator {
 		$$ = create_tree("designator_list",2,$1,$2);
@@ -648,17 +749,22 @@ labeled_statement
 compound_statement
 	: '{' '}' {
 		$$ = create_tree("compound_statement",2,$1,$2);
-		printf("%d:\tCompoundK statement,\tChildren:\n", NUM ++);
+		$$->no = NUM ++;
+		printf("%d:\tCompoundK statement,\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| '{' block_item_list '}' {
-		$$ = create_tree("compound_statement",3,$1,$2,$3);
-		printf("%d:\tCompoundK statement,\tChildren:\n", NUM ++);
+		$$ = create_tree($2->content.c_str(),1,$2);
+		$$->no = NUM ++;
+		printf("%d:\tCompoundK statement,\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
 block_item_list
 	: block_item {
 		$$ = create_tree("block_item_list",1,$1);
+		$$->no = $1->no;
 	}
 	| block_item_list block_item {
 		$$ = create_tree("block_item_list",2,$1,$2);
@@ -668,9 +774,11 @@ block_item_list
 block_item
 	: declaration {
 		$$ = create_tree("block_item",1,$1);
+		$$->no = $1->no;
 	}
 	| statement {
 		$$ = create_tree("block_item",1,$1);
+		$$->no = $1->no;
 	}
 	;
 
@@ -686,74 +794,100 @@ expression_statement
 //条件语句
 selection_statement
 	: IF '(' expression ')' statement %prec LOWER_THAN_ELSE {
-		$$ = create_tree("selection_statement",5,$1,$2,$3,$4,$5);
-		printf("%d:\tJudgementK statement,\tif\t\tChildren:\n", NUM ++);
+		$$ = create_tree("selection_statement",2,$3,$5);
+		$$->no = NUM ++;
+		printf("%d:\tJudgementK statement,\tif\t\tChildren: ", $$->no);
+		printNo($$);
 	}
     	| IF '(' expression ')' statement ELSE statement {
-		$$ = create_tree("selection_statement",7,$1,$2,$3,$4,$5,$6,$7);
-		printf("%d:\tJudgementK statement,\tif...else\t\tChildren:\n", NUM ++);
+		$$ = create_tree("selection_statement",3,$3,$5,$7);
+		$$->no = NUM ++;
+		printf("%d:\tJudgementK statement,\tif...else\t\tChildren: ", $$->no);
+		printNo($$);
 	}
     	| SWITCH '(' expression ')' statement {
-		$$ = create_tree("selection_statement",5,$1,$2,$3,$4,$5);
-		printf("%d:\tJudgementK statement,\tswitch\t\tChildren:\n", NUM ++);
+		$$ = create_tree("selection_statement",2,$3,$5);
+		$$->no = NUM ++;
+		printf("%d:\tJudgementK statement,\tswitch\t\tChildren: ", $$->no);
+		printNo($$);
 	}
     	;
 
 //循环语句
 iteration_statement
 	: WHILE '(' expression ')' statement {
-		$$ = create_tree("iteration_statement",5,$1,$2,$3,$4,$5);
-		printf("%d:\tRepeatK statement,\twhile\t\tChildren:\n", NUM ++);
+		$$ = create_tree("iteration_statement",2,$3,$5);
+		$$->no = NUM ++;
+		printf("%d:\tRepeatK statement,\twhile\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| DO statement WHILE '(' expression ')' ';' {
-		$$ = create_tree("iteration_statement",7,$1,$2,$3,$4,$5,$6,$7);
-		printf("%d:\tRepeatK statement,\tdo...while\tChildren:\n", NUM ++);
+		$$ = create_tree("iteration_statement",2,$2,$5);
+		$$->no = NUM ++;
+		printf("%d:\tRepeatK statement,\tdo...while\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| FOR '(' expression_statement expression_statement ')' statement {
-		$$ = create_tree("iteration_statement",6,$1,$2,$3,$4,$5,$6);
-		printf("%d:\tRepeatK statement,\tfor\t\tChildren:\n", NUM ++);
+		$$ = create_tree("iteration_statement",3,$3,$4,$6);
+		$$->no = NUM ++;
+		printf("%d:\tRepeatK statement,\tfor\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| FOR '(' expression_statement expression_statement expression ')' statement {
-		$$ = create_tree("iteration_statement",7,$1,$2,$3,$4,$5,$6,$7);
-		printf("%d:\tRepeatK statement,\tfor\t\tChildren:\n", NUM ++);
+		$$ = create_tree("iteration_statement",4,$3,$4,$5,$7);
+		$$->no = NUM ++;
+		printf("%d:\tRepeatK statement,\tfor\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| FOR '(' declaration expression_statement ')' statement {
-		$$ = create_tree("iteration_statement",6,$1,$2,$3,$4,$5,$6);
-		printf("%d:\tRepeatK statement,\tfor\t\tChildren:\n", NUM ++);
+		$$ = create_tree("iteration_statement",3,$3,$4,$6);
+		$$->no = NUM ++;
+		printf("%d:\tRepeatK statement,\tfor\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| FOR '(' declaration expression_statement expression ')' statement {
-		$$ = create_tree("iteration_statement",7,$1,$2,$3,$4,$5,$6,$7);
-		printf("%d:\tRepeatK statement,\tfor\t\tChildren:\n", NUM ++);
+		$$ = create_tree("iteration_statement",4,$3,$4,$5,$7);
+		$$->no = NUM ++;
+		printf("%d:\tRepeatK statement,\tfor\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	;
 
 //跳转指令
 jump_statement
 	: GOTO IDENTIFIER ';' {
-		$$ = create_tree("jump_statement",2,$1,$2);
-		printf("%d:\tGoto statement,\t\tChildren:\n", NUM ++);
+		$$ = create_tree("jump_statement",1,$2);
+		$$->no = NUM ++;
+		printf("%d:\tGoto statement,\t\tChildren: ", $$->no);
+		printNo($$);
 	}
 	| CONTINUE ';' {
 		$$ = create_tree("jump_statement",2,$1,$2);
-		printf("%d:\tContinue statement,\t\tChildren:\n", NUM ++);
+		$$->no = NUM ++;
+		printf("%d:\tContinue statement,\t\tChildren: ", $$->no);
 	}
 	| BREAK ';' {
 		$$ = create_tree("jump_statement",2,$1,$2);
-		printf("%d:\tBreak statement,\t\tChildren:\n", NUM ++);
+		$$->no = NUM ++;
+		printf("%d:\tBreak statement,\t\tChildren: ", $$->no);
 	}
 	| RETURN ';' {
 		$$ = create_tree("jump_statement",2,$1,$2);
-		printf("%d:\tReturn statement,\t\tChildren:\n", NUM ++);
+		$$->no = NUM ++;
+		printf("%d:\tReturn statement,\t\tChildren: ", $$->no);
 	}
 	| RETURN expression ';' {
-		$$ = create_tree("jump_statement",3,$1,$2,$3);
-		printf("%d:\tReutrn statement,\t\tto:%s\tChildren:\n", NUM ++, $2->content.c_str());
+		$$ = create_tree("jump_statement",1,$2);
+		$$->no = NUM ++;
+		printf("%d:\tReutrn statement,\t\tto:%s\tChildren: ", $$->no, $2->content.c_str());
+		printNo($$);
 	}
 	;
 
 translation_unit
 	: external_declaration {
 		$$ = create_tree("translation_unit",1,$1);
+		$$->no = $1->no;
 	}
 	| translation_unit external_declaration {
 		$$ = create_tree("translation_unit",2,$1,$2);
@@ -763,11 +897,13 @@ translation_unit
 external_declaration
 	: function_definition {
 		$$ = create_tree("external_declaration",1,$1);
+		$$->no = $1->no;
 		//函数定义
 		//printf("function_definition");
 	}
 	| declaration {
 		$$ = create_tree("external_declaration",1,$1);
+		$$->no = $1->no;
 		//变量声明
 		//printf("declaration");
 	}
@@ -785,6 +921,7 @@ function_definition
 declaration_list
 	: declaration {
 		$$ = create_tree("declaration_list",1,$1);
+		$$->no = $1->no;
 	}
 	| declaration_list declaration {
 		$$ = create_tree("declaration_list",2,$1,$2);
@@ -810,7 +947,7 @@ int main(int argc,char* argv[]) {
 	//freopen("output/output.txt","w", stdout);
 	yyparse();
 	printf("\n");
-	eval(root,0);	//输出语法分析树
+	//eval(root,0);	//输出语法分析树
 
 	freeGramTree(root);
 

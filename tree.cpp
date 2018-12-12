@@ -99,6 +99,22 @@ void eval(gramTree *head,int leavel) {
     }
 }
 
+void printNo(gramTree* Node) {
+	if(Node->left != NULL) {
+	cout << Node->left->no << " ";
+	printRight(Node->left);
+	cout << "\n";
+	}
+}
+
+void printRight(gramTree* Node) {
+	if(Node->right != NULL ) {
+		gramTree* right = Node->right;
+		printNo(right);
+		cout << right->no << " ";
+	}
+}
+
 void freeGramTree(gramTree* node) {
 	if (node == NULL)
 		return;
