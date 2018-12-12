@@ -103,8 +103,8 @@ void printNo(gramTree* Node) {
 	if(Node->left != NULL) {
 	cout << Node->left->no << " ";
 	printRight(Node->left);
-	cout << "\n";
 	}
+	cout << "\n";
 }
 
 void printRight(gramTree* Node) {

@@ -544,13 +544,13 @@ static const yytype_uint16 yyrline[] =
      417,   421,   425,   429,   433,   437,   445,   450,   461,   464,
      471,   475,   484,   488,   499,   504,   509,   514,   519,   529,
      535,   539,   546,   550,   556,   562,   568,   579,   583,   592,
-     595,   598,   604,   607,   616,   619,   622,   625,   628,   631,
-     634,   637,   640,   643,   646,   653,   657,   661,   668,   672,
-     675,   681,   690,   698,   702,   708,   711,   718,   721,   724,
-     727,   730,   733,   740,   743,   750,   756,   765,   769,   775,
-     779,   786,   789,   796,   802,   808,   818,   824,   830,   836,
-     842,   848,   858,   864,   869,   874,   879,   888,   892,   898,
-     904,   913,   916,   922,   926
+     595,   598,   605,   609,   618,   621,   624,   627,   630,   633,
+     636,   639,   642,   645,   648,   655,   659,   663,   670,   674,
+     677,   683,   692,   700,   704,   710,   713,   720,   724,   728,
+     732,   736,   740,   748,   751,   758,   764,   773,   777,   783,
+     787,   794,   797,   804,   810,   816,   826,   832,   838,   844,
+     850,   856,   866,   872,   877,   882,   887,   896,   900,   906,
+     912,   921,   924,   930,   934
 };
 #endif
 
@@ -2313,7 +2313,7 @@ yyreduce:
     {
 		(yyval.gt) = create_tree((yyvsp[-1].gt)->content.c_str(),2,(yyvsp[-2].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
-		printf("%d:\tExpr,\t\t\top:=\t\tChildren:\n", (yyval.gt)->no);
+		printf("%d:\tExpr,\t\t\top:=\t\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
 #line 2320 "y.tab.c" /* yacc.c:1645  */
@@ -2494,588 +2494,596 @@ yyreduce:
 #line 598 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("parameter_declaration",1,(yyvsp[0].gt));
+		(yyval.gt)->no = (yyvsp[0].gt)->no;
 	}
-#line 2499 "y.tab.c" /* yacc.c:1645  */
+#line 2500 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 92:
-#line 604 "myparser.y" /* yacc.c:1645  */
+#line 605 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("identifier_list",1,(yyvsp[0].gt));
+		(yyval.gt)->no = (yyvsp[0].gt)->no;
 	}
-#line 2507 "y.tab.c" /* yacc.c:1645  */
+#line 2509 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 93:
-#line 607 "myparser.y" /* yacc.c:1645  */
+#line 609 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("identifier_list",3,(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tVar Declaration,\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
-#line 2518 "y.tab.c" /* yacc.c:1645  */
+#line 2520 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 94:
-#line 616 "myparser.y" /* yacc.c:1645  */
+#line 618 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("abstract_declarator",3,(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2526 "y.tab.c" /* yacc.c:1645  */
+#line 2528 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 95:
-#line 619 "myparser.y" /* yacc.c:1645  */
+#line 621 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("abstract_declarator",2,(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2534 "y.tab.c" /* yacc.c:1645  */
+#line 2536 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 96:
-#line 622 "myparser.y" /* yacc.c:1645  */
+#line 624 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("abstract_declarator",3,(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2542 "y.tab.c" /* yacc.c:1645  */
+#line 2544 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 97:
-#line 625 "myparser.y" /* yacc.c:1645  */
+#line 627 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("abstract_declarator",3,(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2550 "y.tab.c" /* yacc.c:1645  */
+#line 2552 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 98:
-#line 628 "myparser.y" /* yacc.c:1645  */
+#line 630 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("abstract_declarator",4,(yyvsp[-3].gt),(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2558 "y.tab.c" /* yacc.c:1645  */
+#line 2560 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 99:
-#line 631 "myparser.y" /* yacc.c:1645  */
+#line 633 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("abstract_declarator",3,(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2566 "y.tab.c" /* yacc.c:1645  */
+#line 2568 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 100:
-#line 634 "myparser.y" /* yacc.c:1645  */
+#line 636 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("abstract_declarator",4,(yyvsp[-3].gt),(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2574 "y.tab.c" /* yacc.c:1645  */
+#line 2576 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 101:
-#line 637 "myparser.y" /* yacc.c:1645  */
+#line 639 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("abstract_declarator",2,(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2582 "y.tab.c" /* yacc.c:1645  */
+#line 2584 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 102:
-#line 640 "myparser.y" /* yacc.c:1645  */
+#line 642 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("abstract_declarator",3,(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2590 "y.tab.c" /* yacc.c:1645  */
+#line 2592 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 103:
-#line 643 "myparser.y" /* yacc.c:1645  */
+#line 645 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("abstract_declarator",3,(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2598 "y.tab.c" /* yacc.c:1645  */
+#line 2600 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 104:
-#line 646 "myparser.y" /* yacc.c:1645  */
+#line 648 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("abstract_declarator",4,(yyvsp[-3].gt),(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2606 "y.tab.c" /* yacc.c:1645  */
+#line 2608 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 105:
-#line 653 "myparser.y" /* yacc.c:1645  */
+#line 655 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("initializer",1,(yyvsp[0].gt));
 		(yyval.gt)->no = (yyvsp[0].gt)->no;
 	}
-#line 2615 "y.tab.c" /* yacc.c:1645  */
+#line 2617 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 106:
-#line 657 "myparser.y" /* yacc.c:1645  */
+#line 659 "myparser.y" /* yacc.c:1645  */
     {
 		//列表初始化 {1,1,1}
 		(yyval.gt) = create_tree("initializer",3,(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2624 "y.tab.c" /* yacc.c:1645  */
+#line 2626 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 107:
-#line 661 "myparser.y" /* yacc.c:1645  */
+#line 663 "myparser.y" /* yacc.c:1645  */
     {
 		//列表初始化 {1,1,1,}
 		(yyval.gt) = create_tree("initializer",4,(yyvsp[-3].gt),(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2633 "y.tab.c" /* yacc.c:1645  */
+#line 2635 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 108:
-#line 668 "myparser.y" /* yacc.c:1645  */
+#line 670 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("initializer_list",1,(yyvsp[0].gt));
 		(yyval.gt)->no = (yyvsp[0].gt)->no;
 	}
-#line 2642 "y.tab.c" /* yacc.c:1645  */
+#line 2644 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 109:
-#line 672 "myparser.y" /* yacc.c:1645  */
+#line 674 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("initializer_list",2,(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2650 "y.tab.c" /* yacc.c:1645  */
+#line 2652 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 110:
-#line 675 "myparser.y" /* yacc.c:1645  */
+#line 677 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("initializer_list",3,(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tVar Declaration,\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
-#line 2661 "y.tab.c" /* yacc.c:1645  */
+#line 2663 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 111:
-#line 681 "myparser.y" /* yacc.c:1645  */
+#line 683 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("initializer_list",3,(yyvsp[-3].gt),(yyvsp[-2].gt),(yyvsp[-1].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tVar Declaration,\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
-#line 2672 "y.tab.c" /* yacc.c:1645  */
+#line 2674 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 112:
-#line 690 "myparser.y" /* yacc.c:1645  */
+#line 692 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("designation",2,(yyvsp[-1].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
-		printf("%d:\tExpr,\t\t\top:=\t\tChildren:\n", (yyval.gt)->no);
+		printf("%d:\tExpr,\t\t\top:=\t\tChildren: ", (yyval.gt)->no);
 	}
-#line 2682 "y.tab.c" /* yacc.c:1645  */
+#line 2684 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 113:
-#line 698 "myparser.y" /* yacc.c:1645  */
+#line 700 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("designator_list",1,(yyvsp[0].gt));
 		(yyval.gt)->no = (yyvsp[0].gt)->no;
 	}
-#line 2691 "y.tab.c" /* yacc.c:1645  */
+#line 2693 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 114:
-#line 702 "myparser.y" /* yacc.c:1645  */
+#line 704 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("designator_list",2,(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2699 "y.tab.c" /* yacc.c:1645  */
+#line 2701 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 115:
-#line 708 "myparser.y" /* yacc.c:1645  */
+#line 710 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("designator",3,(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2707 "y.tab.c" /* yacc.c:1645  */
+#line 2709 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 116:
-#line 711 "myparser.y" /* yacc.c:1645  */
+#line 713 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("designator",2,(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
-#line 2715 "y.tab.c" /* yacc.c:1645  */
+#line 2717 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 117:
-#line 718 "myparser.y" /* yacc.c:1645  */
+#line 720 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("statement",1,(yyvsp[0].gt));
+		(yyval.gt)->no = (yyvsp[0].gt)->no;
 	}
-#line 2723 "y.tab.c" /* yacc.c:1645  */
+#line 2726 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 118:
-#line 721 "myparser.y" /* yacc.c:1645  */
-    {
-		(yyval.gt) = create_tree("statement",1,(yyvsp[0].gt));
-	}
-#line 2731 "y.tab.c" /* yacc.c:1645  */
-    break;
-
-  case 119:
 #line 724 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("statement",1,(yyvsp[0].gt));
+		(yyval.gt)->no = (yyvsp[0].gt)->no;
 	}
-#line 2739 "y.tab.c" /* yacc.c:1645  */
+#line 2735 "y.tab.c" /* yacc.c:1645  */
+    break;
+
+  case 119:
+#line 728 "myparser.y" /* yacc.c:1645  */
+    {
+		(yyval.gt) = create_tree("statement",1,(yyvsp[0].gt));
+		(yyval.gt)->no = (yyvsp[0].gt)->no;
+	}
+#line 2744 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 120:
-#line 727 "myparser.y" /* yacc.c:1645  */
+#line 732 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("statement",1,(yyvsp[0].gt));
+		(yyval.gt)->no = (yyvsp[0].gt)->no;
 	}
-#line 2747 "y.tab.c" /* yacc.c:1645  */
+#line 2753 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 121:
-#line 730 "myparser.y" /* yacc.c:1645  */
+#line 736 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("statement",1,(yyvsp[0].gt));
+		(yyval.gt)->no = (yyvsp[0].gt)->no;
 	}
-#line 2755 "y.tab.c" /* yacc.c:1645  */
+#line 2762 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 122:
-#line 733 "myparser.y" /* yacc.c:1645  */
-    {
-		(yyval.gt) = create_tree("statement",1,(yyvsp[0].gt));
-	}
-#line 2763 "y.tab.c" /* yacc.c:1645  */
-    break;
-
-  case 123:
 #line 740 "myparser.y" /* yacc.c:1645  */
     {
-		(yyval.gt) = create_tree("labeled_statement",3,(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
+		(yyval.gt) = create_tree("statement",1,(yyvsp[0].gt));
+		(yyval.gt)->no = (yyvsp[0].gt)->no;
 	}
 #line 2771 "y.tab.c" /* yacc.c:1645  */
     break;
 
-  case 124:
-#line 743 "myparser.y" /* yacc.c:1645  */
+  case 123:
+#line 748 "myparser.y" /* yacc.c:1645  */
     {
-		(yyval.gt) = create_tree("labeled_statement",4,(yyvsp[-3].gt),(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
+		(yyval.gt) = create_tree("labeled_statement",3,(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
 #line 2779 "y.tab.c" /* yacc.c:1645  */
     break;
 
+  case 124:
+#line 751 "myparser.y" /* yacc.c:1645  */
+    {
+		(yyval.gt) = create_tree("labeled_statement",4,(yyvsp[-3].gt),(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
+	}
+#line 2787 "y.tab.c" /* yacc.c:1645  */
+    break;
+
   case 125:
-#line 750 "myparser.y" /* yacc.c:1645  */
+#line 758 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("compound_statement",2,(yyvsp[-1].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tCompoundK statement,\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
-#line 2790 "y.tab.c" /* yacc.c:1645  */
+#line 2798 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 126:
-#line 756 "myparser.y" /* yacc.c:1645  */
+#line 764 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree((yyvsp[-1].gt)->content.c_str(),1,(yyvsp[-1].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tCompoundK statement,\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
-#line 2801 "y.tab.c" /* yacc.c:1645  */
+#line 2809 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 127:
-#line 765 "myparser.y" /* yacc.c:1645  */
+#line 773 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("block_item_list",1,(yyvsp[0].gt));
 		(yyval.gt)->no = (yyvsp[0].gt)->no;
 	}
-#line 2810 "y.tab.c" /* yacc.c:1645  */
-    break;
-
-  case 128:
-#line 769 "myparser.y" /* yacc.c:1645  */
-    {
-		(yyval.gt) = create_tree("block_item_list",2,(yyvsp[-1].gt),(yyvsp[0].gt));
-	}
 #line 2818 "y.tab.c" /* yacc.c:1645  */
     break;
 
+  case 128:
+#line 777 "myparser.y" /* yacc.c:1645  */
+    {
+		(yyval.gt) = create_tree("block_item_list",2,(yyvsp[-1].gt),(yyvsp[0].gt));
+	}
+#line 2826 "y.tab.c" /* yacc.c:1645  */
+    break;
+
   case 129:
-#line 775 "myparser.y" /* yacc.c:1645  */
+#line 783 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("block_item",1,(yyvsp[0].gt));
 		(yyval.gt)->no = (yyvsp[0].gt)->no;
 	}
-#line 2827 "y.tab.c" /* yacc.c:1645  */
+#line 2835 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 130:
-#line 779 "myparser.y" /* yacc.c:1645  */
+#line 787 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("block_item",1,(yyvsp[0].gt));
 		(yyval.gt)->no = (yyvsp[0].gt)->no;
-	}
-#line 2836 "y.tab.c" /* yacc.c:1645  */
-    break;
-
-  case 131:
-#line 786 "myparser.y" /* yacc.c:1645  */
-    {
-		(yyval.gt) = create_tree("expression_statement",1,(yyvsp[0].gt));
 	}
 #line 2844 "y.tab.c" /* yacc.c:1645  */
     break;
 
-  case 132:
-#line 789 "myparser.y" /* yacc.c:1645  */
+  case 131:
+#line 794 "myparser.y" /* yacc.c:1645  */
     {
-		(yyval.gt) = create_tree("expression_statement",2,(yyvsp[-1].gt),(yyvsp[0].gt));
+		(yyval.gt) = create_tree("expression_statement",1,(yyvsp[0].gt));
 	}
 #line 2852 "y.tab.c" /* yacc.c:1645  */
     break;
 
+  case 132:
+#line 797 "myparser.y" /* yacc.c:1645  */
+    {
+		(yyval.gt) = create_tree("expression_statement",2,(yyvsp[-1].gt),(yyvsp[0].gt));
+	}
+#line 2860 "y.tab.c" /* yacc.c:1645  */
+    break;
+
   case 133:
-#line 796 "myparser.y" /* yacc.c:1645  */
+#line 804 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("selection_statement",2,(yyvsp[-2].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tJudgementK statement,\tif\t\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
-#line 2863 "y.tab.c" /* yacc.c:1645  */
+#line 2871 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 134:
-#line 802 "myparser.y" /* yacc.c:1645  */
+#line 810 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("selection_statement",3,(yyvsp[-4].gt),(yyvsp[-2].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tJudgementK statement,\tif...else\t\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
-#line 2874 "y.tab.c" /* yacc.c:1645  */
+#line 2882 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 135:
-#line 808 "myparser.y" /* yacc.c:1645  */
+#line 816 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("selection_statement",2,(yyvsp[-2].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tJudgementK statement,\tswitch\t\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
-#line 2885 "y.tab.c" /* yacc.c:1645  */
+#line 2893 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 136:
-#line 818 "myparser.y" /* yacc.c:1645  */
+#line 826 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("iteration_statement",2,(yyvsp[-2].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tRepeatK statement,\twhile\t\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
-#line 2896 "y.tab.c" /* yacc.c:1645  */
+#line 2904 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 137:
-#line 824 "myparser.y" /* yacc.c:1645  */
+#line 832 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("iteration_statement",2,(yyvsp[-5].gt),(yyvsp[-2].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tRepeatK statement,\tdo...while\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
-#line 2907 "y.tab.c" /* yacc.c:1645  */
+#line 2915 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 138:
-#line 830 "myparser.y" /* yacc.c:1645  */
+#line 838 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("iteration_statement",3,(yyvsp[-3].gt),(yyvsp[-2].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tRepeatK statement,\tfor\t\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
-#line 2918 "y.tab.c" /* yacc.c:1645  */
+#line 2926 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 139:
-#line 836 "myparser.y" /* yacc.c:1645  */
+#line 844 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("iteration_statement",4,(yyvsp[-4].gt),(yyvsp[-3].gt),(yyvsp[-2].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tRepeatK statement,\tfor\t\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
-#line 2929 "y.tab.c" /* yacc.c:1645  */
+#line 2937 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 140:
-#line 842 "myparser.y" /* yacc.c:1645  */
+#line 850 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("iteration_statement",3,(yyvsp[-3].gt),(yyvsp[-2].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tRepeatK statement,\tfor\t\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
-#line 2940 "y.tab.c" /* yacc.c:1645  */
+#line 2948 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 141:
-#line 848 "myparser.y" /* yacc.c:1645  */
+#line 856 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("iteration_statement",4,(yyvsp[-4].gt),(yyvsp[-3].gt),(yyvsp[-2].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tRepeatK statement,\tfor\t\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
-#line 2951 "y.tab.c" /* yacc.c:1645  */
+#line 2959 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 142:
-#line 858 "myparser.y" /* yacc.c:1645  */
+#line 866 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("jump_statement",1,(yyvsp[-1].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tGoto statement,\t\tChildren: ", (yyval.gt)->no);
 		printNo((yyval.gt));
 	}
-#line 2962 "y.tab.c" /* yacc.c:1645  */
+#line 2970 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 143:
-#line 864 "myparser.y" /* yacc.c:1645  */
+#line 872 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("jump_statement",2,(yyvsp[-1].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tContinue statement,\t\tChildren: ", (yyval.gt)->no);
 	}
-#line 2972 "y.tab.c" /* yacc.c:1645  */
+#line 2980 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 144:
-#line 869 "myparser.y" /* yacc.c:1645  */
+#line 877 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("jump_statement",2,(yyvsp[-1].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tBreak statement,\t\tChildren: ", (yyval.gt)->no);
 	}
-#line 2982 "y.tab.c" /* yacc.c:1645  */
+#line 2990 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 145:
-#line 874 "myparser.y" /* yacc.c:1645  */
+#line 882 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("jump_statement",2,(yyvsp[-1].gt),(yyvsp[0].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tReturn statement,\t\tChildren: ", (yyval.gt)->no);
 	}
-#line 2992 "y.tab.c" /* yacc.c:1645  */
+#line 3000 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 146:
-#line 879 "myparser.y" /* yacc.c:1645  */
+#line 887 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("jump_statement",1,(yyvsp[-1].gt));
 		(yyval.gt)->no = NUM ++;
 		printf("%d:\tReutrn statement,\t\tto:%s\tChildren: ", (yyval.gt)->no, (yyvsp[-1].gt)->content.c_str());
 		printNo((yyval.gt));
 	}
-#line 3003 "y.tab.c" /* yacc.c:1645  */
+#line 3011 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 147:
-#line 888 "myparser.y" /* yacc.c:1645  */
+#line 896 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("translation_unit",1,(yyvsp[0].gt));
 		(yyval.gt)->no = (yyvsp[0].gt)->no;
 	}
-#line 3012 "y.tab.c" /* yacc.c:1645  */
-    break;
-
-  case 148:
-#line 892 "myparser.y" /* yacc.c:1645  */
-    {
-		(yyval.gt) = create_tree("translation_unit",2,(yyvsp[-1].gt),(yyvsp[0].gt));
-	}
 #line 3020 "y.tab.c" /* yacc.c:1645  */
     break;
 
+  case 148:
+#line 900 "myparser.y" /* yacc.c:1645  */
+    {
+		(yyval.gt) = create_tree("translation_unit",2,(yyvsp[-1].gt),(yyvsp[0].gt));
+	}
+#line 3028 "y.tab.c" /* yacc.c:1645  */
+    break;
+
   case 149:
-#line 898 "myparser.y" /* yacc.c:1645  */
+#line 906 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("external_declaration",1,(yyvsp[0].gt));
 		(yyval.gt)->no = (yyvsp[0].gt)->no;
 		//函数定义
 		//printf("function_definition");
 	}
-#line 3031 "y.tab.c" /* yacc.c:1645  */
+#line 3039 "y.tab.c" /* yacc.c:1645  */
     break;
 
   case 150:
-#line 904 "myparser.y" /* yacc.c:1645  */
+#line 912 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("external_declaration",1,(yyvsp[0].gt));
 		(yyval.gt)->no = (yyvsp[0].gt)->no;
 		//变量声明
 		//printf("declaration");
 	}
-#line 3042 "y.tab.c" /* yacc.c:1645  */
-    break;
-
-  case 151:
-#line 913 "myparser.y" /* yacc.c:1645  */
-    {
-		(yyval.gt) = create_tree("function_definition",4,(yyvsp[-3].gt),(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
-	}
 #line 3050 "y.tab.c" /* yacc.c:1645  */
     break;
 
-  case 152:
-#line 916 "myparser.y" /* yacc.c:1645  */
+  case 151:
+#line 921 "myparser.y" /* yacc.c:1645  */
     {
-		(yyval.gt) = create_tree("function_definition",3,(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
+		(yyval.gt) = create_tree("function_definition",4,(yyvsp[-3].gt),(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
 	}
 #line 3058 "y.tab.c" /* yacc.c:1645  */
     break;
 
+  case 152:
+#line 924 "myparser.y" /* yacc.c:1645  */
+    {
+		(yyval.gt) = create_tree("function_definition",3,(yyvsp[-2].gt),(yyvsp[-1].gt),(yyvsp[0].gt));
+	}
+#line 3066 "y.tab.c" /* yacc.c:1645  */
+    break;
+
   case 153:
-#line 922 "myparser.y" /* yacc.c:1645  */
+#line 930 "myparser.y" /* yacc.c:1645  */
     {
 		(yyval.gt) = create_tree("declaration_list",1,(yyvsp[0].gt));
 		(yyval.gt)->no = (yyvsp[0].gt)->no;
 	}
-#line 3067 "y.tab.c" /* yacc.c:1645  */
-    break;
-
-  case 154:
-#line 926 "myparser.y" /* yacc.c:1645  */
-    {
-		(yyval.gt) = create_tree("declaration_list",2,(yyvsp[-1].gt),(yyvsp[0].gt));
-	}
 #line 3075 "y.tab.c" /* yacc.c:1645  */
     break;
 
+  case 154:
+#line 934 "myparser.y" /* yacc.c:1645  */
+    {
+		(yyval.gt) = create_tree("declaration_list",2,(yyvsp[-1].gt),(yyvsp[0].gt));
+	}
+#line 3083 "y.tab.c" /* yacc.c:1645  */
+    break;
 
-#line 3079 "y.tab.c" /* yacc.c:1645  */
+
+#line 3087 "y.tab.c" /* yacc.c:1645  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -3302,7 +3310,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 931 "myparser.y" /* yacc.c:1903  */
+#line 939 "myparser.y" /* yacc.c:1903  */
 
 
 extern int column;

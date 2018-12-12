@@ -488,7 +488,7 @@ init_declarator
 	| declarator '=' initializer {
 		$$ = create_tree($2->content.c_str(),2,$1,$3);
 		$$->no = NUM ++;
-		printf("%d:\tExpr,\t\t\top:=\t\tChildren:\n", $$->no);
+		printf("%d:\tExpr,\t\t\top:=\t\tChildren: ", $$->no);
 		printNo($$);
 	}
 	;
@@ -597,12 +597,14 @@ parameter_declaration
 	}
 	| type_specifier {
 		$$ = create_tree("parameter_declaration",1,$1);
+		$$->no = $1->no;
 	}
 	;
 
 identifier_list
 	: IDENTIFIER {
 		$$ = create_tree("identifier_list",1,$1);
+		$$->no = $1->no;
 	}
 	| identifier_list ',' IDENTIFIER {
 		$$ = create_tree("identifier_list",3,$1,$2,$3);
@@ -690,7 +692,7 @@ designation
 	: designator_list '=' {
 		$$ = create_tree("designation",2,$1,$2);
 		$$->no = NUM ++;
-		printf("%d:\tExpr,\t\t\top:=\t\tChildren:\n", $$->no);
+		printf("%d:\tExpr,\t\t\top:=\t\tChildren: ", $$->no);
 	}
 	;
 
@@ -717,21 +719,27 @@ designator
 statement
 	: labeled_statement {
 		$$ = create_tree("statement",1,$1);
+		$$->no = $1->no;
 	}
 	| compound_statement {
 		$$ = create_tree("statement",1,$1);
+		$$->no = $1->no;
 	}
 	| expression_statement{
 		$$ = create_tree("statement",1,$1);
+		$$->no = $1->no;
 	}
 	| selection_statement {
 		$$ = create_tree("statement",1,$1);
+		$$->no = $1->no;
 	}
 	| iteration_statement {
 		$$ = create_tree("statement",1,$1);
+		$$->no = $1->no;
 	}
 	| jump_statement {
 		$$ = create_tree("statement",1,$1);
+		$$->no = $1->no;
 	}
 	;
 
