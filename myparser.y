@@ -98,7 +98,8 @@ primary_expression
 		printf("%d:\tConstant DOUBLE Declaration,\tvalue:%s\tChildren:\n", $$->no, $1->content.c_str());
 	}
 	| '(' expression ')' {
-		$$ = create_tree("primary_expression",3,$1,$2,$3);
+		$$ = create_tree("primary_expression",1,$2);
+		$$->no = $2->no;
 	}
 	;
 
@@ -111,22 +112,27 @@ postfix_expression
 	| postfix_expression '[' expression ']' {
 		$$ = create_tree("postfix_expression",4,$1,$2,$3,$4);
 		//数组调用
+		$$->no = $1->no;
 	}
 	| postfix_expression '(' ')' {
 		$$ = create_tree("postfix_expression",3,$1,$2,$3);
 		//函数调用
+		$$->no = $1->no;
 	}
 	| postfix_expression '(' argument_expression_list ')' {
 		$$ = create_tree("postfix_expression",4,$1,$2,$3,$4);
 		//函数调用
+		$$->no = $1->no;
 	}
 	| postfix_expression INC_OP {
 		//++
 		$$ = create_tree("postfix_expression",2,$1,$2);
+		$$->no = $1->no;
 	}
 	| postfix_expression DEC_OP {
 		//--
 		$$ = create_tree("postfix_expression",2,$1,$2);
+		$$->no = $1->no;
 	}
 	;
 
@@ -164,6 +170,7 @@ unary_expression
 	}
 	| unary_operator unary_expression{
 		$$ = create_tree("unary_expression",2,$1,$2);
+		$$->no = $1->no;
 	}
 	;
 
@@ -171,15 +178,19 @@ unary_expression
 unary_operator
 	: '+' {
 		$$ = create_tree("unary_operator",1,$1);
+		$$->no = $1->no;
 	}
 	| '-' {
 		$$ = create_tree("unary_operator",1,$1);
+		$$->no = $1->no;
 	}
 	| '~' {
 		$$ = create_tree("unary_operator",1,$1);
+		$$->no = $1->no;
 	}
 	| '!' {
 		$$ = create_tree("unary_operator",1,$1);
+		$$->no = $1->no;
 	}
 	;
 
@@ -397,46 +408,57 @@ assignment_expression
 assignment_operator
 	: '=' {
 		$$ = create_tree("assignment_operator",1,$1);
+		$$->no = $1->no;
 	}
 	| MUL_ASSIGN {
 		//*=
 		$$ = create_tree("assignment_operator",1,$1);
+		$$->no = $1->no;
 	}
 	| DIV_ASSIGN {
 		// /=
 		$$ = create_tree("assignment_operator",1,$1);
+		$$->no = $1->no;
 	}
 	| MOD_ASSIGN {
 		// %=
 		$$ = create_tree("assignment_operator",1,$1);
+		$$->no = $1->no;
 	}
 	| ADD_ASSIGN {
 		// += 
 		$$ = create_tree("assignment_operator",1,$1);
+		$$->no = $1->no;
 	}
 	| SUB_ASSIGN {
 		// -=
 		$$ = create_tree("assignment_operator",1,$1);
+		$$->no = $1->no;
 	}
 	| LEFT_ASSIGN {
 		// <<=
 		$$ = create_tree("assignment_operator",1,$1);
+		$$->no = $1->no;
 	}
 	| RIGHT_ASSIGN {
 		// >>=
 		$$ = create_tree("assignment_operator",1,$1);
+		$$->no = $1->no;
 	}
 	| AND_ASSIGN {
 		// &=
 		$$ = create_tree("assignment_operator",1,$1);
+		$$->no = $1->no;
 	}
 	| XOR_ASSIGN {
 		// ^=
 		$$ = create_tree("assignment_operator",1,$1);
+		$$->no = $1->no;
 	}
 	| OR_ASSIGN {
 		// |=
 		$$ = create_tree("assignment_operator",1,$1);
+		$$->no = $1->no;
 	}
 	;
 
@@ -459,10 +481,12 @@ expression
 
 declaration
 	: type_specifier ';' {
-		$$ = create_tree("declaration",2,$1,$2); //?
+		$$ = create_tree("declaration",1,$1); //?
+		$$->no = $1->no;
 	}
 	| type_specifier init_declarator_list ';' {
-		$$ = create_tree("declaration",2,$1,$3);
+		$$ = create_tree("declaration",2,$1,$2);
+		$$->no = $1->no;
 	}
 	;
 
@@ -534,42 +558,50 @@ declarator
 	}
 	| '(' declarator ')' {
 		//.....
-		$$ = create_tree("declarator",3,$1,$2,$3);
+		$$ = create_tree("declarator",1,$2);
+		$$->no = $2->no;
 	}
 	| declarator '[' assignment_expression ']' {
 		//数组
 		//printf("assignment_expression");
-		$$ = create_tree("declarator",4,$1,$2,$3,$4);
+		$$ = create_tree("declarator",2,$1,$3);
 		$$->no = NUM ++;
-		printf("%d:\tArray Declaration,\tsymbol:%s, interval: %s\tChildren:\n", $$->no, $1->content.c_str(), $3->content.c_str());
+		printf("%d:\tArray Declaration,\tsymbol:%s, interval: %s\tChildren:", $$->no, $1->content.c_str(), $3->content.c_str());
+		printNo($$);
 	}
 	| declarator '[' '*' ']' {
 		//....
-		$$ = create_tree("declarator",4,$1,$2,$3,$4);
+		$$ = create_tree("declarator",1,$1);
+		$$->no = NUM++;
+		printf("%d:\tArray Declaration,\tsymbol:%s\tChildren:\n", $$->no, $1->content.c_str());
 	}
 	| declarator '[' ']' {
 		//数组
-		$$ = create_tree("declarator",3,$1,$2,$3);
+		$$ = create_tree("declarator",1,$1);
 		$$->no = NUM ++;
-		printf("%d:\tArray Declaration,\tsymbol:%s\tChildren:\n", $$->no, $1->content.c_str());
+		printf("%d:\tArray Declaration,\tsymbol:%s\tChildren:", $$->no, $1->content.c_str());
+		printNo($$);
 	}
 	| declarator '(' parameter_list ')' {
 		//函数
-		$$ = create_tree("declarator",4,$1,$2,$3,$4);
+		$$ = create_tree("declarator",2,$1,$3);
 		$$->no = NUM ++;
-		printf("%d:\tFunction Declaration,\tsymbol:%s, interval: %s\tChildren:\n", $$->no, $1->content.c_str(), $3->content.c_str());
+		printf("%d:\tFunction Declaration,\tsymbol:%s, interval: %s\tChildren:", $$->no, $1->content.c_str(), $3->content.c_str());
+		printNo($$);
 	}
 	| declarator '(' identifier_list ')' {
 		//函数
-		$$ = create_tree("declarator",4,$1,$2,$3,$4);
+		$$ = create_tree("declarator",2,$1,$3);
 		$$->no = NUM ++;
-		printf("%d:\tFunction Declaration,\tsymbol:%s, interval: %s\tChildren:\n", $$->no, $1->content.c_str(), $3->content.c_str());
+		printf("%d:\tFunction Declaration,\tsymbol:%s, interval: %s\tChildren:", $$->no, $1->content.c_str(), $3->content.c_str());
+		printNo($$);
 	}
 	| declarator '(' ')' {
 		//函数
-		$$ = create_tree("declarator",3,$1,$2,$3);
+		$$ = create_tree("declarator",1,$1);
 		$$->no = NUM ++;
-		printf("%d:\tFunction Declaration,\tsymbol:%s\tChildren:\n", $$->no, $1->content.c_str());
+		printf("%d:\tFunction Declaration,\tsymbol:%s\tChildren:", $$->no, $1->content.c_str());
+		printNo($$);
 	}
 	;
 
@@ -581,7 +613,7 @@ parameter_list
 		$$->no = $1->no;
 	}
 	| parameter_list ',' parameter_declaration {
-		$$ = create_tree("parameter_list",3,$1,$2,$3);
+		$$ = create_tree("parameter_list",2,$1,$3);
 		$$->no = NUM ++;
 		printf("%d:\tVar Declaration,\tChildren: ", $$->no);
 		printNo($$);
@@ -591,9 +623,11 @@ parameter_list
 parameter_declaration
 	: type_specifier declarator {
 		$$ = create_tree("parameter_declaration",2,$1,$2);
+		$$->no = $1->no;
 	}
 	| type_specifier abstract_declarator {
 		$$ = create_tree("parameter_declaration",2,$1,$2);
+		$$->no = $1->no;
 	}
 	| type_specifier {
 		$$ = create_tree("parameter_declaration",1,$1);
@@ -607,7 +641,7 @@ identifier_list
 		$$->no = $1->no;
 	}
 	| identifier_list ',' IDENTIFIER {
-		$$ = create_tree("identifier_list",3,$1,$2,$3);
+		$$ = create_tree("identifier_list",2,$1,$3);
 		$$->no = NUM ++;
 		printf("%d:\tVar Declaration,\tChildren: ", $$->no);
 		printNo($$);
@@ -616,37 +650,50 @@ identifier_list
 
 abstract_declarator
 	: '(' abstract_declarator ')' {
-		$$ = create_tree("abstract_declarator",3,$1,$2,$3);
+		$$ = create_tree("abstract_declarator",1,$2);
+		$$->no = $2->no;
 	}
 	| '[' ']' {
-		$$ = create_tree("abstract_declarator",2,$1,$2);
+		$$ = create_tree("abstract_declarator",1,$$);
+		$$->no = $1->no;
 	}
 	| '[' assignment_expression ']' {
-		$$ = create_tree("abstract_declarator",3,$1,$2,$3);
+		$$ = create_tree("abstract_declarator",1,$2);
+		$$->no = $2->no;
 	}
 	| abstract_declarator '[' ']' {
-		$$ = create_tree("abstract_declarator",3,$1,$2,$3);
+		$$ = create_tree("abstract_declarator",1,$1);
+		$$->no = $1->no;
 	}
 	| abstract_declarator '[' assignment_expression ']' {
-		$$ = create_tree("abstract_declarator",4,$1,$2,$3,$4);
+		$$ = create_tree("abstract_declarator",2,$1,$3);
+		$$->no = NUM ++;
+		printf("%d:\tArray Declaration,\tsymbol:%s, interval: %s\tChildren:", $$->no, $1->content.c_str(), $3->content.c_str());
+		printNo($$);
 	}
 	| '[' '*' ']' {
-		$$ = create_tree("abstract_declarator",3,$1,$2,$3);
+		$$ = create_tree("abstract_declarator",1,$$);
+		$$->no = $1->no;
 	}
 	| abstract_declarator '[' '*' ']' {
-		$$ = create_tree("abstract_declarator",4,$1,$2,$3,$4);
+		$$ = create_tree("abstract_declarator",1,$1);
+		$$->no = $1->no;
 	}
 	| '(' ')' {
-		$$ = create_tree("abstract_declarator",2,$1,$2);
+		$$ = create_tree("abstract_declarator",1,$$);
+		$$->no = $1->no;
 	}
 	| '(' parameter_list ')' {
-		$$ = create_tree("abstract_declarator",3,$1,$2,$3);
+		$$ = create_tree("abstract_declarator",1,$2);
+		$$->no = $2->no;
 	}
 	| abstract_declarator '(' ')' {
-		$$ = create_tree("abstract_declarator",3,$1,$2,$3);
+		$$ = create_tree("abstract_declarator",1,$1);
+		$$->no = $1->no;
 	}
 	| abstract_declarator '(' parameter_list ')' {
-		$$ = create_tree("abstract_declarator",4,$1,$2,$3,$4);
+		$$ = create_tree("abstract_declarator",2,$1,$3);
+		$$->no = $1->no;
 	}
 	;
 
@@ -658,11 +705,13 @@ initializer
 	}
 	| '{' initializer_list '}' {
 		//列表初始化 {1,1,1}
-		$$ = create_tree("initializer",3,$1,$2,$3);
+		$$ = create_tree("initializer",1,$2);
+		$$->no = $2->no;
 	}
 	| '{' initializer_list ',' '}' {
 		//列表初始化 {1,1,1,}
-		$$ = create_tree("initializer",4,$1,$2,$3,$4);
+		$$ = create_tree("initializer",1,$2);
+		$$->no = $2->no;
 	}
 	;
 
@@ -673,15 +722,16 @@ initializer_list
 	}
 	| designation initializer {
 		$$ = create_tree("initializer_list",2,$1,$2);
+		$$->no = $1->no;
 	}
 	| initializer_list ',' initializer {
-		$$ = create_tree("initializer_list",3,$1,$2,$3);
+		$$ = create_tree("initializer_list",2,$1,$3);
 		$$->no = NUM ++;
 		printf("%d:\tVar Declaration,\tChildren: ", $$->no);
 		printNo($$);
 	}
 	| initializer_list ',' designation initializer {
-		$$ = create_tree("initializer_list",3,$1,$2,$3);
+		$$ = create_tree("initializer_list",3,$1,$3,$4);
 		$$->no = NUM ++;
 		printf("%d:\tVar Declaration,\tChildren: ", $$->no);
 		printNo($$);
@@ -690,7 +740,7 @@ initializer_list
 
 designation
 	: designator_list '=' {
-		$$ = create_tree("designation",2,$1,$2);
+		$$ = create_tree("designation",1,$1);
 		$$->no = NUM ++;
 		printf("%d:\tExpr,\t\t\top:=\t\tChildren: ", $$->no);
 	}
@@ -703,15 +753,18 @@ designator_list
 	}
 	| designator_list designator {
 		$$ = create_tree("designator_list",2,$1,$2);
+		$$->no = $1->no;
 	}
 	;
 
 designator
 	: '[' logical_or_expression ']' {
-		$$ = create_tree("designator",3,$1,$2,$3);
+		$$ = create_tree("designator",1,$2);
+		$$->no = $2->no;
 	}
 	| '.' IDENTIFIER {
-		$$ = create_tree("designator",2,$1,$2);
+		$$ = create_tree("designator",1,$2);
+		$$->no = $2->no;
 	}
 	;
 
@@ -746,17 +799,20 @@ statement
 //标签声明
 labeled_statement
 	: IDENTIFIER ':' statement {
-		$$ = create_tree("labeled_statement",3,$1,$2,$3);
+		$$ = create_tree("labeled_statement",2,$1,$3);
+		$$->no = $1->no;
 	}
 	| CASE logical_or_expression ':' statement {
-		$$ = create_tree("labeled_statement",4,$1,$2,$3,$4);
+		$$ = create_tree("labeled_statement",3,$1,$2,$4);
+		$$->no = $1->no;
+		printNo($$);
 	}
 	;
 
 //复合语句
 compound_statement
 	: '{' '}' {
-		$$ = create_tree("compound_statement",2,$1,$2);
+		$$ = create_tree("compound_statement",1,$$);
 		$$->no = NUM ++;
 		printf("%d:\tCompoundK statement,\tChildren: ", $$->no);
 		printNo($$);
@@ -776,6 +832,7 @@ block_item_list
 	}
 	| block_item_list block_item {
 		$$ = create_tree("block_item_list",2,$1,$2);
+		$$->no = $1->no;
 	}
 	;
 
@@ -793,9 +850,11 @@ block_item
 expression_statement
 	: ';' {
 		$$ = create_tree("expression_statement",1,$1);
+		$$->no = $1->no;
 	}
 	| expression ';' {
-		$$ = create_tree("expression_statement",2,$1,$2);
+		$$ = create_tree("expression_statement",1,$1);
+		$$->no = $1->no;
 	}
 	;
 
@@ -899,6 +958,7 @@ translation_unit
 	}
 	| translation_unit external_declaration {
 		$$ = create_tree("translation_unit",2,$1,$2);
+		$$->no = $1->no;
 	}
 	;
 
@@ -908,21 +968,27 @@ external_declaration
 		$$->no = $1->no;
 		//函数定义
 		//printf("function_definition");
+		printNo($$);
 	}
 	| declaration {
 		$$ = create_tree("external_declaration",1,$1);
 		$$->no = $1->no;
 		//变量声明
 		//printf("declaration");
+		printNo($$);
 	}
 	;
 
 function_definition
 	: type_specifier declarator declaration_list compound_statement {
 		$$ = create_tree("function_definition",4,$1,$2,$3,$4);
+		$$->no = $1->no;
+		printNo($$);
 	}
 	| type_specifier declarator compound_statement {
 		$$ = create_tree("function_definition",3,$1,$2,$3);
+		$$->no = $1->no;
+		printNo($$);
 	}
 	;
 
@@ -933,6 +999,7 @@ declaration_list
 	}
 	| declaration_list declaration {
 		$$ = create_tree("declaration_list",2,$1,$2);
+		$$->no = $1->no;
 	}
 	;
 
@@ -952,7 +1019,6 @@ int main(int argc,char* argv[]) {
 
 	yyin = fopen(argv[1],"r");
 	
-	//freopen("output/output.txt","w", stdout);
 	yyparse();
 	printf("\n");
 	//eval(root,0);	//输出语法分析树

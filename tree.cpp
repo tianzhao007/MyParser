@@ -74,7 +74,7 @@ void eval(gramTree *head,int leavel) {
             for(int i=0;i<leavel;++i) {
                 cout << " ";
             }
-           cout << "└" << head->name;
+           cout << " " << head->name;
         
             if(head->name == "IDENTIFIER"||head->name == "BOOL"|| head->name == "INT" || 
             head->name == "CHAR" || head->name == "DOUBLE") {
@@ -110,8 +110,9 @@ void printNo(gramTree* Node) {
 void printRight(gramTree* Node) {
 	if(Node->right != NULL ) {
 		gramTree* right = Node->right;
-		printNo(right);
+		//printNo(right);
 		cout << right->no << " ";
+		printRight(right);
 	}
 }
 
